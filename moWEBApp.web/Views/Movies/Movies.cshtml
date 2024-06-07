@@ -1,0 +1,77 @@
+﻿@using System.Globalization
+@model MoviesViewModel
+@{
+    ViewData["Title"] = "Movies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    @if(Model.Movies.Count() > 0)
+    {
+        @foreach (var movie in Model.Movies)
+        {
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-12 text-center">
+                            <h1 class="card-header bg-dark-blue text-white" style="font-size: 1.6em; font-weight:400; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">@movie.Title</h1>
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="~/img/@movie.ImageUrl"
+                                 class="img-fluid img-thumbnail" style="height: 100%;" alt="@movie.Title">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body mb-1">
+                                <p class="card-text lead">
+                                    @{
+                                        if (movie.Description.Length > 40)
+                                        {
+                                            <span>@movie.Description.Substring(0, 40) ...</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@movie.Description</span>
+                                        }
+                                    }
+                                </p>
+                                <p><b>Director: </b> @movie.Director</p>
+                                <p><b>Category: </b>@movie.Genre.Name</p>
+                                <p><b>Start Date: </b> @movie.StartDate.ToString("dd MMM yyyy", new CultureInfo("en-US"))</p>
+                                <p><b>End Date: </b> @movie.EndDate.ToString("dd MMM yyyy", new CultureInfo("en-US"))</p>
+                                <p><b>Status: </b> 
+                                    @if(DateTime.Now >= movie.StartDate && DateTime.Now <= movie.EndDate)
+                                    {
+                                        <span class="badge bg-success text-white">AVAILABLE</span>
+                                    }
+                                    else if(DateTime.Now > movie.EndDate)
+                                    {
+                                        <span class="badge bg-danger text-white">EXPIRED</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-primary text-white">UPCOMING</span>
+                                    }
+                                </p>
+                                <div class="d-flex justify-content-end">
+                                    <a class="btn btn-outline-dark me-2" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.MovieId" role="button">Details</a>
+                                    <a class="btn btn-outline-success me-2" asp-controller="Movies" asp-action="Edit" asp-route-id="@movie.MovieId" role="button">Edit</a>
+                                    <form asp-controller="Movies" asp-action="Delete" method="post">
+                                        <input type="hidden" name="MovieId" value="@movie.MovieId" />
+                                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Movie Not Found!
+        </div>
+    }
+</div>

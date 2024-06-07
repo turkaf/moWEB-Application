@@ -1,0 +1,46 @@
+﻿@model Movie
+
+@{
+	ViewData["Title"] = "Edit Movie";
+}
+
+<h1 class="text-primary-emphasis text-center">Edit Movie</h1>
+
+<form method="post" asp-controller="Movies" asp-action="Edit">
+	<input type="hidden" name="MovieId" value="@Model.MovieId">
+	<div class="mb-3 form-group">
+		<label asp-for="Title" class="form-label"></label>
+		<input asp-for="Title" class="form-control" placeholder="Title" value="@Model.Title">
+	</div>
+	<div class="mb-3 form-group">
+		<label asp-for="Description" class="form-label"></label>
+		<textarea class="form-control" asp-for="Description" placeholder="Description">@Model.Description</textarea>
+	</div>
+	<div class="mb-3 form-group">
+		<label asp-for="Director" class="form-label"></label>
+		<input asp-for="Director" class="form-control" placeholder="Director" value="@Model.Director">
+	</div>
+	<div class="mb-3 form-group">
+		<label asp-for="StartDate" class="form-label"></label>
+		<input asp-for="StartDate" class="form-control" placeholder="Start date" type="date" value="@Model.StartDate.ToString("dd MMM yyyy")">
+	</div>
+	<div class="mb-3 form-group">
+		<label asp-for="EndDate" class="form-label"></label>
+		<input asp-for="EndDate" class="form-control" placeholder="End date" type="date" value="@Model.EndDate.ToString("dd MMM yyyy")">
+	</div>
+	<div class="mb-3 form-group">
+		<label asp-for="ImageUrl" class="form-label"></label>
+		<input asp-for="ImageUrl" class="form-control" placeholder="Image URL" value="@Model.ImageUrl">
+	</div>
+	<div class="mb-3 form-group">
+		<label asp-for="GenreId" class="form-label"></label>
+		<select class="form-select form-control" asp-for="GenreId" asp-items="@ViewBag.Genres" aria-label="Default select example">
+			<option selected disabled>Choose a genre</option>
+		</select>
+	</div>
+	<div class="mb-3 form-group">
+		<label asp-for="TrailerLink" class="form-label"></label>
+		<input asp-for="TrailerLink" class="form-control" placeholder="Trailer link" value="@Model.TrailerLink">
+	</div>
+	<button type="submit" class="btn btn-success">Submit</button>
+</form>

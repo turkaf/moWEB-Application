@@ -1,0 +1,62 @@
+﻿@using System.Globalization
+@using System.Text.RegularExpressions;
+
+@model Movie
+
+@{
+    ViewData["Title"] = "Movie Detail";
+}
+
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-12 text-center">
+            <h1 class="card-header bg-dark-blue text-white" style="font-size: 2em; font-weight:400; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">@Model.Title</h1>
+        </div>
+    </div>
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="~/img/@Model.ImageUrl"
+                 class="img-fluid img-thumbnail" style="height: 100%;" alt="@Model.Title">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <p class="card-text lead">
+                    @Model.Description
+                </p>
+                <p><b>Director: </b> @Model.Director</p>
+                <p><b>Category: </b>@ViewBag.GenreName</p>
+                <p><b>Start Date: </b> @Model.StartDate.ToString("dd MMM yyyy", new CultureInfo("en-US"))</p>
+                <p><b>End Date: </b> @Model.EndDate.ToString("dd MMM yyyy", new CultureInfo("en-US"))</p>
+                <p>
+                    <b>Status: </b>
+                    @if (DateTime.Now >= Model.StartDate && DateTime.Now <= Model.EndDate)
+                    {
+                        <span class="badge bg-success text-white">AVAILABLE</span>
+                    }
+                    else if (DateTime.Now > Model.EndDate)
+                    {
+                        <span class="badge bg-danger text-white">EXPIRED</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary text-white">UPCOMING</span>
+                    }
+                </p>
+                <div class="embed-responsive embed-responsive-16by9 h-100">
+                    <iframe class="embed-responsive-item w-100" style="height:400px" src="https://www.youtube.com/embed/@Regex.Match(Model.TrailerLink, @"watch\?v=(.*)").Groups[1].Value" frameborder="0" allowfullscreen></iframe>
+                </div>
+                @* @if(Model.Players != null)
+                {
+                    <p>
+                        <ul>
+                            @foreach (var item in Model.Players)
+                            {
+                                <li>@item</li>
+                            }
+                        </ul>
+                    </p>
+                } *@
+            </div>
+        </div>
+    </div>
+</div>
